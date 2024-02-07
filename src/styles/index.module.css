@@ -60,6 +60,7 @@ button:focus-visible {
 
 .cardGrid {
   max-width: 1000px;
+  min-height: 300px;
   display: grid;
   place-items: center;
   grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
@@ -69,10 +70,10 @@ button:focus-visible {
 }
 
 .card {
-  min-height: 100px;
-  min-width: 75px;
   height: 150px;
+  min-height: 100px;
   width: 90px;
+  min-width: 75px;
   border-radius: 15px;
   border: 1px solid white;
 }
