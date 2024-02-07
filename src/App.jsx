@@ -14,7 +14,12 @@ function App() {
     <>
       <Header currentScore={currentScore} highestScore={highestScore} />
       <DescriptionHero />
-      <CardGrid></CardGrid>
+      <CardGrid>
+        <Card></Card>
+        <Card></Card>
+        <Card></Card>
+        <Card></Card>
+      </CardGrid>
       <Footer />
     </>
   );
