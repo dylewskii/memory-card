@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "../src/styles/index.module.css";
 import Header from "./components/Header";
+import DescriptionHero from "./components/DescriptionHero";
 
 function App() {
   const [currentScore, setCurrentScore] = useState(0);
@@ -9,6 +10,7 @@ function App() {
   return (
     <>
       <Header currentScore={currentScore} highestScore={highestScore} />
+      <DescriptionHero />
     </>
   );
 }
