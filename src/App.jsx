@@ -2,6 +2,7 @@ import { useState } from "react";
 import "../src/styles/index.module.css";
 import Header from "./components/Header";
 import DescriptionHero from "./components/DescriptionHero";
+import Scoreboard from "./components/Scoreboard";
 import CardGrid from "./components/CardGrid";
 import Card from "./components/Card";
 import Footer from "./components/Footer";
@@ -14,6 +15,7 @@ function App() {
     <>
       <Header currentScore={currentScore} highestScore={highestScore} />
       <DescriptionHero />
+      <Scoreboard />
       <CardGrid>
         <Card></Card>
         <Card></Card>
