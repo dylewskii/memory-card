@@ -1,4 +1,44 @@
-/* DEFAULT STYLES */
+/* Reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  font: inherit;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+img,
+picture,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+ul {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:visited {
+  color: black;
+}
+
+/* Root */
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -14,18 +54,11 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-
 a:hover {
   color: #535bf2;
 }
 
 body {
-  margin: 0;
   display: flex;
   flex-direction: column;
   min-width: 320px;
@@ -56,7 +89,39 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-/* BASE STYLES */
+/* Base */
+header > h1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.descriptionHero {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 1rem 3rem;
+}
+
+.descriptionHero > h2 {
+  font-size: 2rem;
+}
+
+.scoreboard {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 2rem;
+}
+
+.scoreboard > p {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
 
 .cardGrid {
   max-width: 1000px;
@@ -67,6 +132,7 @@ button:focus-visible {
   border: 1px solid blue;
   gap: 1rem;
   padding: 1rem;
+  margin-top: 1rem;
 }
 
 .card {
@@ -78,7 +144,18 @@ button:focus-visible {
   border: 1px solid white;
 }
 
-/* MEDIA QUERIES */
+footer {
+  margin-top: auto;
+  display: flex;
+  justify-content: center;
+}
+
+.footerContent {
+  display: flex;
+  gap: 1rem;
+}
+
+/* Media */
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
