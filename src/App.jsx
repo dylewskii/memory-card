@@ -44,18 +44,18 @@ function App() {
 
   const handleCardClick = (cardId) => {
     if (pokemons[cardId].selected) {
-      console.log("already chosen. game over!");
-    } else {
-      pokemons[cardId].selected = true;
-      setCurrentScore((curr) => curr + 1);
+      return "pokemon already chosen - game over.";
     }
+
+    pokemons[cardId].selected = true;
+    setCurrentScore((curr) => curr + 1);
   };
 
   return (
     <>
       <Header currentScore={currentScore} highestScore={highestScore} />
       <DescriptionHero />
-      <Scoreboard />
+      <Scoreboard currentScore={currentScore} highestScore={highestScore} />
       <CardGrid>
         {!requestStatus ? (
           <p>Failed to Retrieve Data :( </p>
