@@ -1,7 +1,11 @@
 import styles from "../styles/index.module.css";
 
-export default function Card({ children }) {
-  return <div className={styles.card}>{children}</div>;
+export default function Card({ children, onClick }) {
+  return (
+    <div className={styles.card} onClick={onClick}>
+      {children}
+    </div>
+  );
 }
 
 Card.Image = ({ src }) => {

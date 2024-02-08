@@ -42,6 +42,15 @@ function App() {
     getPokemonData();
   }, []);
 
+  const handleCardClick = (cardId) => {
+    if (pokemons[cardId].selected) {
+      console.log("already chosen. game over!");
+    } else {
+      pokemons[cardId].selected = true;
+      setCurrentScore((curr) => curr + 1);
+    }
+  };
+
   return (
     <>
       <Header currentScore={currentScore} highestScore={highestScore} />
@@ -52,7 +61,7 @@ function App() {
           <p>Failed to Retrieve Data :( </p>
         ) : (
           pokemons.map((pokemon, i) => (
-            <Card key={i}>
+            <Card key={i} onClick={() => handleCardClick(i + 1)}>
               <Card.Title>{pokemon.name}</Card.Title>
               <Card.Image src={pokemon.imgUrl} />
             </Card>
