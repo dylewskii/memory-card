@@ -7,6 +7,11 @@ import CardGrid from "./components/CardGrid";
 import Card from "./components/Card";
 import Footer from "./components/Footer";
 
+// generate number between 1-1025
+// Fetch PokeAPI info for that pokemon,
+// -> GET https://pokeapi.co/api/v2/pokemon/bulbasaur
+// .sprites.other[official-artwork][front_default]
+
 function App() {
   const baseUrl = "https://pokeapi.co/api/v2/pokemon/";
 
@@ -43,11 +48,19 @@ function App() {
     getPokemonData();
   }, []);
 
+  const getPokemonImageUrl = async (nameOfPokemon) => {
+    const request = await fetch(`${baseUrl}${nameOfPokemon}`);
+    const data = await request.json();
+    const imgUrl = data.sprites.other["official-artwork"].front_default;
+
+    return imgUrl;
+  };
+
   // Runs gameOver() if card already selected, otherwise sets the selected flag to true & updates current score.
   const handleCardClick = (cardId) => {
-    console.log(cardId);
+    // console.log(cardId);
     const clickedPokemon = pokemons[cardId];
-    console.log(clickedPokemon);
+    // console.log(clickedPokemon);
     if (clickedPokemon.selected) {
       gameOver();
       alert("pokemon already chosen - game over.");
