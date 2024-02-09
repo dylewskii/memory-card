@@ -45,25 +45,28 @@ function App() {
 
   // Runs gameOver() if card already selected, otherwise sets the selected flag to true & updates current score.
   const handleCardClick = (cardId) => {
-    if (pokemons[cardId].selected) {
+    console.log(cardId);
+    const clickedPokemon = pokemons[cardId];
+    console.log(clickedPokemon);
+    if (clickedPokemon.selected) {
       gameOver();
       alert("pokemon already chosen - game over.");
-      return "lost";
+    } else {
+      const updatedPokemons = pokemons.map((pokemon, index) =>
+        index === cardId ? { ...pokemon, selected: true } : pokemon
+      );
+      setPokemons(updatedPokemons);
+      setCurrentScore((curr) => curr + 1);
     }
-
-    pokemons[cardId].selected = true;
-    setCurrentScore((curr) => curr + 1);
   };
 
   // Resets current score, updates highest score & resets selected values.
   const gameOver = () => {
-    setCurrentScore(0);
-
     if (currentScore > highestScore) {
       setHighestScore(currentScore);
-      return;
     }
 
+    setCurrentScore(0);
     setPokemons((pokemons) => pokemons.map((p) => ({ ...p, selected: false })));
   };
 
@@ -76,8 +79,8 @@ function App() {
         {!requestStatus ? (
           <p>Failed to Retrieve Data :( </p>
         ) : (
-          pokemons.map((pokemon, i) => (
-            <Card key={i} onClick={() => handleCardClick(i + 1)}>
+          pokemons?.map((pokemon, i) => (
+            <Card key={i} onClick={() => handleCardClick(i)}>
               <Card.Title>{pokemon.name}</Card.Title>
               <Card.Image src={pokemon.imgUrl} />
             </Card>
