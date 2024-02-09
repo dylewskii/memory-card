@@ -20,6 +20,7 @@ function App() {
 
   const [pokemons, setPokemons] = useState([]);
 
+  // Fetches pokemon data from API - sets pokemons state to returned object.
   useEffect(() => {
     async function getPokemonData() {
       const request = await fetch(baseUrl);
@@ -42,13 +43,28 @@ function App() {
     getPokemonData();
   }, []);
 
+  // Runs gameOver() if card already selected, otherwise sets the selected flag to true & updates current score.
   const handleCardClick = (cardId) => {
     if (pokemons[cardId].selected) {
-      return "pokemon already chosen - game over.";
+      gameOver();
+      alert("pokemon already chosen - game over.");
+      return "lost";
     }
 
     pokemons[cardId].selected = true;
     setCurrentScore((curr) => curr + 1);
+  };
+
+  // Resets current score, updates highest score & resets selected values.
+  const gameOver = () => {
+    setCurrentScore(0);
+
+    if (currentScore > highestScore) {
+      setHighestScore(currentScore);
+      return;
+    }
+
+    setPokemons((pokemons) => pokemons.map((p) => ({ ...p, selected: false })));
   };
 
   return (
