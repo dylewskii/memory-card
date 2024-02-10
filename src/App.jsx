@@ -94,8 +94,8 @@ function App() {
         ) : (
           pokemons?.map((pokemon, i) => (
             <Card key={i} onClick={() => handleCardClick(i)}>
-              <Card.Title>{pokemon.name}</Card.Title>
               <Card.Image src={pokemon.imgUrl} />
+              <Card.Title>{pokemon.name}</Card.Title>
             </Card>
           ))
         )}
