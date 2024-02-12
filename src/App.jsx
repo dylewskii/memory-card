@@ -64,8 +64,8 @@ function App() {
     }
   };
 
-  // Return an array of (5-20) Pokemon indexes dependant on difficulty provided
-  const getRandomPokemonIndexList = (difficulty = "easy") => {
+  // Return an array of (5-20) Pokemon indexes dependant on difficulty provided.
+  const getRandomIndexList = (difficulty = "easy") => {
     const difficultyLevels = {
       easy: 5,
       medium: 10,
@@ -84,8 +84,9 @@ function App() {
     return randomIndexes;
   };
 
-  getRandomPokemonIndexList();
+  getRandomIndexList();
 
+  // Return the provided Pokemons official artwork image URL.
   const getPokemonImageUrl = async (nameOfPokemon) => {
     try {
       const request = await fetch(`${baseUrl}${nameOfPokemon}`);
