@@ -55,11 +55,11 @@ function App() {
     try {
       const request = await fetch(`${baseUrl}?limit=1025`);
       const data = await request.json();
-      const pokemonList = data.results;
+      const pokemonNameList = data.results;
 
-      return pokemonList;
+      return pokemonNameList;
     } catch (err) {
-      return "An error occured whilst fetching/parsing the Pokemon Image URL";
+      return "An error occured whilst fetching/parsing the Pokemon Name List";
     }
   };
 
