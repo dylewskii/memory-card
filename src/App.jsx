@@ -29,55 +29,59 @@ function App() {
   const [pokemons, setPokemons] = useState([]);
 
   // Fetches pokemon data from API - sets pokemons state to returned object.
-  useEffect(() => {
-    async function getPokemonData() {
-      const request = await fetch(baseUrl);
-      if (!request.ok) return setRequestStatus(false);
-
-      const data = await request.json();
-      const pokemonResults = data.results;
-      console.log(pokemonResults);
-
-      const pokemonData = pokemonResults.map((poke, i) => {
-        const name = poke.name;
-        const imgUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${
-          i + 1
-        }.png`;
-        const selected = false;
-        return { name, imgUrl, selected };
-      });
-
-      setPokemons(pokemonData);
-    }
-    getPokemonData();
-  }, []);
-
   // useEffect(() => {
-  //   const getPokemonData = async () => {
-  //     let firstBatchOfPokemon = [];
-  //     const randomIndexList = getRandomIndexList();
-  //     const names = getPokemonNameList();
-  //     names.then((data) => {
-  //       randomIndexList.forEach((index) =>
-  //         firstBatchOfPokemon.push(data[index])
-  //       );
-  //       console.log(firstBatchOfPokemon);
+  //   async function getPokemonData() {
+  //     const request = await fetch(baseUrl);
+  //     if (!request.ok) return setRequestStatus(false);
+
+  //     const data = await request.json();
+  //     const pokemonResults = data.results;
+  //     console.log(pokemonResults);
+
+  //     const pokemonData = pokemonResults.map((poke, i) => {
+  //       const name = poke.name;
+  //       const imgUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${
+  //         i + 1
+  //       }.png`;
+  //       const selected = false;
+  //       return { name, imgUrl, selected };
   //     });
 
-  //     const pokemonData = firstBatchOfPokemon.forEach((pokemonName, i) => {
-  //       const name = pokemonName.name;
-
-  //       getPokemonImageUrl(pokemonName).then((imgUrl) => {
-  //         const selected = false;
-  //         const onePokemon = { name, imgUrl, selected };
-  //       });
-  //     });
-  //     console.log(pokemonData);
-  //   };
+  //     setPokemons(pokemonData);
+  //   }
   //   getPokemonData();
   // }, []);
 
-  // Return a list of all 1025 Pokemons
+  useEffect(() => {
+    const getPokemonData = async () => {
+      try {
+        const randomIndexList = getRandomIndexList();
+        const allPokemonNames = await getPokemonNameList();
+        let startingPokemons = randomIndexList.map(
+          (index) => allPokemonNames[index]
+        );
+        console.log(startingPokemons);
+
+        const pokemonDataPromises = startingPokemons.map(
+          async (pokemonName) => {
+            const name = pokemonName;
+            const imgUrl = await getPokemonImageUrl(name);
+            const selected = false;
+            return { name, imgUrl, selected };
+          }
+        );
+
+        const pokemonData = await Promise.all(pokemonDataPromises);
+        setPokemons(pokemonData);
+      } catch (err) {
+        console.error("Error fetching Pokémon data:", err);
+        setRequestStatus(false);
+      }
+    };
+    getPokemonData();
+  }, []);
+
+  // Returns a list of all 1025 Pokemons
   const getPokemonNameList = async () => {
     try {
       const request = await fetch(`${baseUrl}?limit=1025`);
@@ -93,7 +97,7 @@ function App() {
     }
   };
 
-  // Return an array of (5-20) Pokemon indexes dependant on difficulty provided.
+  // Returns an array of (5-20) indexes, depending on difficulty provided.
   const getRandomIndexList = (difficulty = "easy") => {
     const difficultyLevels = {
       easy: 5,
