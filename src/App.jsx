@@ -36,6 +36,7 @@ function App() {
 
       const data = await request.json();
       const pokemonResults = data.results;
+      console.log(pokemonResults);
 
       const pokemonData = pokemonResults.map((poke, i) => {
         const name = poke.name;
@@ -51,12 +52,40 @@ function App() {
     getPokemonData();
   }, []);
 
+  // useEffect(() => {
+  //   const getPokemonData = async () => {
+  //     let firstBatchOfPokemon = [];
+  //     const randomIndexList = getRandomIndexList();
+  //     const names = getPokemonNameList();
+  //     names.then((data) => {
+  //       randomIndexList.forEach((index) =>
+  //         firstBatchOfPokemon.push(data[index])
+  //       );
+  //       console.log(firstBatchOfPokemon);
+  //     });
+
+  //     const pokemonData = firstBatchOfPokemon.forEach((pokemonName, i) => {
+  //       const name = pokemonName.name;
+
+  //       getPokemonImageUrl(pokemonName).then((imgUrl) => {
+  //         const selected = false;
+  //         const onePokemon = { name, imgUrl, selected };
+  //       });
+  //     });
+  //     console.log(pokemonData);
+  //   };
+  //   getPokemonData();
+  // }, []);
+
   // Return a list of all 1025 Pokemons
   const getPokemonNameList = async () => {
     try {
       const request = await fetch(`${baseUrl}?limit=1025`);
       const data = await request.json();
-      const pokemonNameList = data.results;
+      const results = data.results;
+      let pokemonNameList = [];
+
+      results.forEach((result) => pokemonNameList.push(result.name));
 
       return pokemonNameList;
     } catch (err) {
@@ -83,8 +112,6 @@ function App() {
 
     return randomIndexes;
   };
-
-  getRandomIndexList();
 
   // Return the provided Pokemons official artwork image URL.
   const getPokemonImageUrl = async (nameOfPokemon) => {
