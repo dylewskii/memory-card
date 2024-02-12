@@ -12,6 +12,9 @@ import Footer from "./components/Footer";
 // -> GET https://pokeapi.co/api/v2/pokemon/bulbasaur
 // .sprites.other[official-artwork][front_default]
 
+// ALL POKEMON
+// https://pokeapi.co/api/v2/pokemon/?limit=1025
+
 function App() {
   const baseUrl = "https://pokeapi.co/api/v2/pokemon/";
 
@@ -32,7 +35,7 @@ function App() {
       if (!request.ok) return setRequestStatus(false);
 
       const data = await request.json();
-      const pokemonResults = await data.results;
+      const pokemonResults = data.results;
 
       const pokemonData = pokemonResults.map((poke, i) => {
         const name = poke.name;
@@ -48,12 +51,27 @@ function App() {
     getPokemonData();
   }, []);
 
-  const getPokemonImageUrl = async (nameOfPokemon) => {
-    const request = await fetch(`${baseUrl}${nameOfPokemon}`);
-    const data = await request.json();
-    const imgUrl = data.sprites.other["official-artwork"].front_default;
+  const getPokemonList = async () => {
+    try {
+      const request = await fetch(`${baseUrl}?limit=1025`);
+      const data = await request.json();
+      const pokemonList = data.results;
 
-    return imgUrl;
+      return pokemonList;
+    } catch (err) {
+      return "An error occured whilst fetching/parsing the Pokemon Image URL";
+    }
+  };
+
+  const getPokemonImageUrl = async (nameOfPokemon) => {
+    try {
+      const request = await fetch(`${baseUrl}${nameOfPokemon}`);
+      const data = await request.json();
+      const imgUrl = data.sprites.other["official-artwork"].front_default;
+      return imgUrl;
+    } catch (err) {
+      return "An error occured whilst fetching/parsing the Pokemon Image URL";
+    }
   };
 
   // Runs gameOver() if card already selected, otherwise sets the selected flag to true & updates current score.
