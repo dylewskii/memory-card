@@ -51,7 +51,8 @@ function App() {
     getPokemonData();
   }, []);
 
-  const getPokemonList = async () => {
+  // Return a list of all 1025 Pokemons
+  const getPokemonNameList = async () => {
     try {
       const request = await fetch(`${baseUrl}?limit=1025`);
       const data = await request.json();
@@ -62,6 +63,28 @@ function App() {
       return "An error occured whilst fetching/parsing the Pokemon Name List";
     }
   };
+
+  // Return an array of (5-20) Pokemon indexes dependant on difficulty provided
+  const getRandomPokemonIndexList = (difficulty = "easy") => {
+    const difficultyLevels = {
+      easy: 5,
+      medium: 10,
+      hard: 20,
+    };
+
+    // fallback to 'easy' if difficulty invalid
+    const count = difficultyLevels[difficulty] || difficultyLevels.easy;
+    let randomIndexes = [];
+
+    for (let i = 0; i < count; i++) {
+      const randomNum = Math.floor(Math.random() * 1025 + 1);
+      randomIndexes.push(randomNum);
+    }
+
+    return randomIndexes;
+  };
+
+  getRandomPokemonIndexList();
 
   const getPokemonImageUrl = async (nameOfPokemon) => {
     try {
