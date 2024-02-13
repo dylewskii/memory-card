@@ -160,7 +160,7 @@ header > h1 {
 }
 
 .card:hover > img {
-  animation: jump 0.8s ease-in-out;
+  animation: jump 0.65s ease-in-out;
 }
 
 footer {
