@@ -46,7 +46,12 @@ function App() {
             const exists = prevPokemons.some(
               (pokemon) => pokemon.name === newPokemonName
             );
-            if (!exists) return [...prevPokemons, newPokemon];
+
+            if (!exists) {
+              const newPokemonsArray = [...prevPokemons, newPokemon];
+              const shuffledPokemons = shuffleArray(newPokemonsArray);
+              return shuffledPokemons;
+            }
 
             return prevPokemons;
           });
