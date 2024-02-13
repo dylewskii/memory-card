@@ -156,6 +156,7 @@ header > h1 {
   cursor: pointer;
   transition: scale 100ms ease-in-out;
   padding: 1rem 0.5rem;
+  text-align: center;
 }
 
 .card:hover > img {
