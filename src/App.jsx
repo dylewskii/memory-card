@@ -116,7 +116,7 @@ function App() {
   // Returns an array of (5-20) indexes, depending on difficulty provided.
   const generateRandomIndexList = (difficulty = "easy") => {
     const difficultyLevels = {
-      easy: 5,
+      easy: 6,
       medium: 10,
       hard: 20,
     };
