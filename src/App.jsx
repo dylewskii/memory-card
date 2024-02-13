@@ -141,8 +141,10 @@ function App() {
       const updatedPokemons = pokemons.map((pokemon, index) =>
         index === cardId ? { ...pokemon, selected: true } : pokemon
       );
-      setPokemons(updatedPokemons);
+      const shuffledPokemons = shuffleArray([...updatedPokemons]);
+      setPokemons(shuffledPokemons);
       setCurrentScore((curr) => curr + 1);
+      console.log(pokemons);
     }
   };
 
@@ -154,6 +156,15 @@ function App() {
 
     setCurrentScore(0);
     setPokemons((pokemons) => pokemons.map((p) => ({ ...p, selected: false })));
+  };
+
+  // FisherYates Shuffle Algorithm
+  const shuffleArray = (array) => {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
   };
 
   return (
