@@ -7,8 +7,7 @@ import CardGrid from "./components/CardGrid";
 import Card from "./components/Card";
 import Footer from "./components/Footer";
 
-// generate number between 1-1025
-// Fetch PokeAPI info for that pokemon,
+// POKEMON SPRITES PATH
 // -> GET https://pokeapi.co/api/v2/pokemon/bulbasaur
 // .sprites.other[official-artwork][front_default]
 
@@ -16,51 +15,60 @@ import Footer from "./components/Footer";
 // https://pokeapi.co/api/v2/pokemon/?limit=1025
 
 function App() {
-  const baseUrl = "https://pokeapi.co/api/v2/pokemon/";
-
-  // Img URL below requires ID or Name at the end
-  // .sprites.other[official-artwork][front_default]
-  // "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png"
   const [requestStatus, setRequestStatus] = useState(true);
-
   const [currentScore, setCurrentScore] = useState(0);
   const [highestScore, setHighestScore] = useState(0);
-
   const [pokemons, setPokemons] = useState([]);
+  const [hasLost, setHasLost] = useState(false);
+  const baseUrl = "https://pokeapi.co/api/v2/pokemon/";
 
-  // Fetches pokemon data from API - sets pokemons state to returned object.
-  // useEffect(() => {
-  //   async function getPokemonData() {
-  //     const request = await fetch(baseUrl);
-  //     if (!request.ok) return setRequestStatus(false);
+  // On currentScore change - adds an additional Pokemon.
+  useEffect(() => {
+    const addNewPokemon = async () => {
+      try {
+        // ensure score has changed and not just initial render
+        if (currentScore > 0) {
+          const allPokemonNames = await getPokemonNameList();
+          // generate a new random index to fetch a new Pokémon
+          const newRandomIndex = generateRandomIndex(allPokemonNames.length);
+          const newPokemonName = allPokemonNames[newRandomIndex];
+          const newPokemonImgUrl = await getPokemonImageUrl(newPokemonName);
 
-  //     const data = await request.json();
-  //     const pokemonResults = data.results;
-  //     console.log(pokemonResults);
+          const newPokemon = {
+            name: newPokemonName,
+            imgUrl: newPokemonImgUrl,
+            selected: false,
+          };
 
-  //     const pokemonData = pokemonResults.map((poke, i) => {
-  //       const name = poke.name;
-  //       const imgUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${
-  //         i + 1
-  //       }.png`;
-  //       const selected = false;
-  //       return { name, imgUrl, selected };
-  //     });
+          // update state to include the new Pokémon
+          setPokemons((prevPokemons) => {
+            // check if the Pokémon already exists in the list to avoid duplicates
+            const exists = prevPokemons.some(
+              (pokemon) => pokemon.name === newPokemonName
+            );
+            if (!exists) return [...prevPokemons, newPokemon];
 
-  //     setPokemons(pokemonData);
-  //   }
-  //   getPokemonData();
-  // }, []);
+            return prevPokemons;
+          });
+        }
+      } catch (error) {
+        console.error("Error adding new Pokémon:", error);
+        setRequestStatus(false);
+      }
+    };
 
+    addNewPokemon();
+  }, [currentScore]);
+
+  // On Mount - Fetches pokemon data from API - sets pokemons state to returned object.
   useEffect(() => {
     const getPokemonData = async () => {
       try {
-        const randomIndexList = getRandomIndexList();
+        const randomIndexList = generateRandomIndexList();
         const allPokemonNames = await getPokemonNameList();
         let startingPokemons = randomIndexList.map(
           (index) => allPokemonNames[index]
         );
-        console.log(startingPokemons);
 
         const pokemonDataPromises = startingPokemons.map(
           async (pokemonName) => {
@@ -79,7 +87,7 @@ function App() {
       }
     };
     getPokemonData();
-  }, []);
+  }, [hasLost]);
 
   // Returns a list of all 1025 Pokemons
   const getPokemonNameList = async () => {
@@ -97,8 +105,11 @@ function App() {
     }
   };
 
+  // Returns a random index up to a
+  const generateRandomIndex = (length) => Math.floor(Math.random() * length);
+
   // Returns an array of (5-20) indexes, depending on difficulty provided.
-  const getRandomIndexList = (difficulty = "easy") => {
+  const generateRandomIndexList = (difficulty = "easy") => {
     const difficultyLevels = {
       easy: 5,
       medium: 10,
@@ -131,9 +142,7 @@ function App() {
 
   // Runs gameOver() if card already selected, otherwise sets the selected flag to true & updates current score.
   const handleCardClick = (cardId) => {
-    // console.log(cardId);
     const clickedPokemon = pokemons[cardId];
-    // console.log(clickedPokemon);
     if (clickedPokemon.selected) {
       gameOver();
       alert("pokemon already chosen - game over.");
@@ -144,7 +153,6 @@ function App() {
       const shuffledPokemons = shuffleArray([...updatedPokemons]);
       setPokemons(shuffledPokemons);
       setCurrentScore((curr) => curr + 1);
-      console.log(pokemons);
     }
   };
 
@@ -156,9 +164,10 @@ function App() {
 
     setCurrentScore(0);
     setPokemons((pokemons) => pokemons.map((p) => ({ ...p, selected: false })));
+    setHasLost(true);
   };
 
-  // FisherYates Shuffle Algorithm
+  // Fisher-Yates Shuffle Algorithm
   const shuffleArray = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
