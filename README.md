@@ -43,5 +43,5 @@ Ensure you have [Node.js](https://nodejs.org/) installed on your machine.
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/your_username_/PokeMemory.git
+   git clone https://github.com/dylewskii/PokeMemory.git
    ```
